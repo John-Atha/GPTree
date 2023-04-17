@@ -8,7 +8,9 @@ export interface MyTree {
 export interface MyNode {
     id: number;
     name: string;
-    description: string;
-    prompts: string[];
+    attributes: {
+        description: string;
+        prompts: string[];
+    }
     children: MyNode[];
 }

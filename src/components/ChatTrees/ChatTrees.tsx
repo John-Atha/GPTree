@@ -13,46 +13,8 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { MyNode, MyTree } from "../../types";
 import ChatTree from "../ChatTree/ChatTree";
 
-// This is a simplified example of an org chart with a depth of 2.
-// Note how deeper levels are defined recursively via the `children` property.
-const orgChart = {
-  name: "CEO",
-  children: [
-    {
-      name: "Manager",
-      attributes: {
-        department: "Production",
-      },
-      children: [
-        {
-          name: "Foreman",
-          attributes: {
-            department: "Fabrication",
-          },
-          children: [
-            {
-              name: "Worker",
-            },
-          ],
-        },
-        {
-          name: "Foreman",
-          attributes: {
-            department: "Assembly",
-          },
-          children: [
-            {
-              name: "Worker",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 function ChatTrees() {
-  const { trees, addNode, removeNode, addTree } = useTrees();
+  const { trees, addTree, refresh } = useTrees();
 
   const [selectedTree, setSelectedTree] = React.useState<number | null>(null);
 
@@ -71,9 +33,30 @@ function ChatTrees() {
     const newRoot: MyNode = {
       id: 1,
       name: "New Root",
-      description: "This is a new dummy root",
-      prompts: ["Dummy prompt 1", "Dummy prompt 2"],
-      children: [],
+      attributes: {
+        description: "This is a new dummy root",
+        prompts: ["Dummy prompt 1", "Dummy prompt 2"],
+      },
+      children: [
+        {
+          id: 2,
+          name: "New Child",
+          attributes: {
+            description: "This is a new dummy child",
+            prompts: ["Dummy prompt 1", "Dummy prompt 2"],
+          },
+          children: [],
+        },
+        {
+          id: 3,
+          name: "New Child",
+          attributes: {
+            description: "This is a new dummy child",
+            prompts: ["Dummy prompt 1", "Dummy prompt 2"],
+          },
+          children: [],
+        },
+      ],
     };
     const newTree: MyTree = {
       id: trees.length + 1,
@@ -127,7 +110,11 @@ function ChatTrees() {
                 value={`${tree.id}`}
                 sx={{ height: "-webkit-fill-available" }}
               >
-                <ChatTree data={orgChart} />
+                <ChatTree
+                  data={tree.root}
+                  treeId={tree.id}
+                  refresh={refresh}
+                />
               </TabPanel>
             ))}
           </Grid>

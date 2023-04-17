@@ -4,13 +4,25 @@ import { MyNode, MyTree } from "../types";
 export const useTrees = () => {
   const [trees, setTrees] = useState<MyTree[]>([]);
 
-  useEffect(() => {
+  const refresh = () => {
     const treesString = localStorage.getItem("trees");
     const trees: MyTree[] = JSON.parse(treesString || "[]");
     setTrees(trees);
+  }
+
+  useEffect(() => {
+    refresh();
   }, []);
 
-  const findNode = (node: MyNode, nodeId: number): MyNode | undefined => {
+  const findNodeById = (treeId: number, nodeId: number) => {
+    const tree = trees.find((tree) => tree.id === treeId);
+    if (tree) {
+      return findNode(tree.root, nodeId);
+    }
+    return null;
+  };
+
+  const findNode = (node: MyNode, nodeId: number): MyNode | null => {
     if (node.id === nodeId) {
       return node;
     }
@@ -20,7 +32,7 @@ export const useTrees = () => {
         return found;
       }
     }
-    return undefined;
+    return null;
   };
 
   const addNode = (treeId: number, node: MyNode, parentId: number) => {
@@ -67,5 +79,32 @@ export const useTrees = () => {
     localStorage.setItem("trees", JSON.stringify(newTrees));
   };
 
-  return { trees, addTree, removeTree, addNode, removeNode };
+  const updateNode = (treeId: number, nodeId: number, node: MyNode) => {
+    const newTrees = trees.map((tree) => {
+      if (tree.id === treeId) {
+        const newTree = { ...tree };
+        const found = findNode(newTree.root, nodeId);
+        if (found) {
+          found.id = node.id;
+          found.name = node.name;
+          found.attributes = node.attributes;
+        }
+        return newTree;
+      }
+      return tree;
+    });
+    setTrees(newTrees);
+    localStorage.setItem("trees", JSON.stringify(newTrees));
+  };
+
+  return {
+    trees,
+    refresh,
+    addTree,
+    removeTree,
+    addNode,
+    removeNode,
+    updateNode,
+    findNodeById,
+  };
 };

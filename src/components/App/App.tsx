@@ -1,17 +1,21 @@
 import React from "react";
 import { Counter } from "../Counter/Counter";
 import "./App.css";
-import { Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import MyAppBar from "../MyAppBar/MyAppBar";
-import ChatTree from "../ChatTree/ChatTree";
+import ChatTrees from "../ChatTrees/ChatTrees";
 
 function App() {
   return (
     <div className="App">
-      <MyAppBar />
-      <Stack className="full-height" spacing={2}>
-        <ChatTree />
-      </Stack>
+      <Grid container direction="column" className="full-height">
+        <Grid item>
+          <MyAppBar />
+        </Grid>
+        <Grid item xs>
+          <ChatTrees />
+        </Grid>
+      </Grid>
     </div>
   );
 }

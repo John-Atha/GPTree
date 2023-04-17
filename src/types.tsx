@@ -6,9 +6,9 @@ export interface MyTree {
 }
 
 export interface MyNode {
-    id: number;
     name: string;
     attributes: {
+        id: number;
         description: string;
         prompts: string[];
     }

@@ -8,6 +8,7 @@ import { MyNode } from "../../types";
 interface ChatNodeDrawerProps {
   selectedTreeId: number | null;
   selectedNodeId: number | null;
+  open: boolean;
   onClose: () => void;
   refresh: () => void;
 }
@@ -15,6 +16,7 @@ interface ChatNodeDrawerProps {
 export default function ChatNodeDrawer({
   selectedTreeId,
   selectedNodeId,
+  open,
   onClose,
   refresh,
 }: ChatNodeDrawerProps) {
@@ -22,21 +24,23 @@ export default function ChatNodeDrawer({
   const [node, setNode] = useState<MyNode | null>(null);
 
   useEffect(() => {
+    console.log({ selectedTreeId, selectedNodeId })
     if (selectedTreeId && selectedNodeId) {
-      const node = findNodeById(selectedTreeId, selectedNodeId);
-      setNode(node);
+      const node_ = findNodeById(selectedTreeId, selectedNodeId);
+      console.log({ node_ })
+      setNode(node_);
     }
     else {
       setNode(null);
     }
   }, [selectedTreeId, selectedNodeId]);
 
-  if (!node || !selectedTreeId) return null;
+  if (!open || !selectedTreeId) return null;
   return (
     <Drawer
       sx={{ width: 400 }}
       anchor="right"
-      open={!!selectedTreeId && !!selectedNodeId}
+      open={!!selectedTreeId}
       onClose={onClose}
     >
       <ChatNodeForm

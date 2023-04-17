@@ -12,7 +12,7 @@ function App() {
         <Grid item>
           <MyAppBar />
         </Grid>
-        <Grid item xs>
+        <Grid item xs padding={2}>
           <ChatTrees />
         </Grid>
       </Grid>

@@ -24,33 +24,34 @@ function ChatTrees() {
   };
 
   useEffect(() => {
-    if (trees.length === 1) {
+    console.log(trees);
+    if (!selectedTree && trees.length) {
       setSelectedTree(trees[0].id);
     }
   }, [trees]);
 
   const addDummyTree = () => {
     const newRoot: MyNode = {
-      id: 1,
       name: "New Root",
       attributes: {
+        id: 1,
         description: "This is a new dummy root",
         prompts: ["Dummy prompt 1", "Dummy prompt 2"],
       },
       children: [
         {
-          id: 2,
           name: "New Child",
           attributes: {
+            id: 2,
             description: "This is a new dummy child",
             prompts: ["Dummy prompt 1", "Dummy prompt 2"],
           },
           children: [],
         },
         {
-          id: 3,
           name: "New Child",
           attributes: {
+            id: 3,
             description: "This is a new dummy child",
             prompts: ["Dummy prompt 1", "Dummy prompt 2"],
           },
@@ -93,7 +94,7 @@ function ChatTrees() {
                   aria-label="lab API tabs example"
                 >
                   {trees.map((tree) => (
-                    <Tab label={tree.name} value={`${tree.id}`} />
+                    <Tab key={tree.id} label={tree.name} value={`${tree.id}`} />
                   ))}
                 </TabList>
               </Grid>
@@ -107,14 +108,11 @@ function ChatTrees() {
           <Grid item xs>
             {trees.map((tree) => (
               <TabPanel
+                key={tree.id}
                 value={`${tree.id}`}
                 sx={{ height: "-webkit-fill-available" }}
               >
-                <ChatTree
-                  data={tree.root}
-                  treeId={tree.id}
-                  refresh={refresh}
-                />
+                <ChatTree data={tree.root} treeId={tree.id} refresh={refresh} />
               </TabPanel>
             ))}
           </Grid>
